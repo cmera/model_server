@@ -978,11 +978,13 @@ Status HttpRestApiHandler::parseRequestComponents(HttpRequestComponents& request
         if (std::regex_match(request_path, sm, predictionRegex))
             return StatusCode::REST_UNSUPPORTED_METHOD;
         if (std::regex_match(request_path, sm, metricsRegex)) {
+            SPDLOG_DEBUG("Metrics regex matched for path: {}", request_path);
             std::string params = sm[3];
             if (!params.empty()) {
                 SPDLOG_DEBUG("Discarded following url parameters: {}", params);
             }
             requestComponents.type = Metrics;
+            SPDLOG_DEBUG("Setting request type to Metrics and returning OK");
             return StatusCode::OK;
         }
         if (std::regex_match(request_path, sm, v3_ListModelsRegex)) {
@@ -994,6 +996,7 @@ Status HttpRestApiHandler::parseRequestComponents(HttpRequestComponents& request
             requestComponents.type = V3_RetrieveModel;
             return StatusCode::OK;
         }
+        SPDLOG_DEBUG("Reached final return for GET request with path: {}", request_path);
         return (std::regex_match(request_path, sm, predictionRegex) ||
                    std::regex_match(request_path, sm, kfs_inferRegex, std::regex_constants::match_any) ||
                    std::regex_match(request_path, sm, configReloadRegex))

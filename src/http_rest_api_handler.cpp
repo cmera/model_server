@@ -121,7 +121,7 @@ const std::string HttpRestApiHandler::v3_RetrieveModelRegexExp =
 const std::string HttpRestApiHandler::v3_RegexExp =
     R"(/v3/.*?(/|$))";
 
-const std::string HttpRestApiHandler::metricsRegexExp = R"((.?)\/metrics(\?(.*))?)";
+const std::string HttpRestApiHandler::metricsRegexExp = R"(\/metrics(\?(.*))?)";
 
 HttpRestApiHandler::HttpRestApiHandler(ovms::Server& ovmsServer, int timeout_in_ms) :
     predictionRegex(predictionRegexExp),
@@ -140,6 +140,7 @@ HttpRestApiHandler::HttpRestApiHandler(ovms::Server& ovmsServer, int timeout_in_
     metricsRegex(metricsRegexExp),
     timeout_in_ms(timeout_in_ms),
     ovmsServer(ovmsServer),
+
 
     kfsGrpcImpl(dynamic_cast<const GRPCServerModule*>(this->ovmsServer.getModule(GRPC_SERVER_MODULE_NAME))->getKFSGrpcImpl()),
     grpcGetModelMetadataImpl(dynamic_cast<const GRPCServerModule*>(this->ovmsServer.getModule(GRPC_SERVER_MODULE_NAME))->getTFSModelMetadataImpl()),
